@@ -1,0 +1,47 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    tty: true
+    env_file: ./.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/go/src/go-app
+    depends_on:
+      - db
+
+  db:
+    platform: linux/x86_64
+    image: "mysql:8.0"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./migration:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: encer
+      MYSQL_USER: encer_user
+      MYSQL_PASSWORD: password
+      command: mysql --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
+
+  phpmyadmin:
+    platform: linux/x86_64
+    image: "phpmyadmin/phpmyadmin:latest"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: password
+    ports:
+      - "8001:80"
+    links:
+      - db
+    volumes:
+      - ./phpmyadmin/session:/sessions
+
+volumes:
+  mysql_data:
+    driver: local

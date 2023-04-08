@@ -1,0 +1,13 @@
+DROP DATABASE IF EXISTS encer;
+CREATE DATABASE encer;
+USE encer;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT UNIQUE NOT NULL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    created_at DATETIME NOT NULL default NOW(),
+    updated_at DATETIME NOT NULL default NOW(),
+    deleted_at DATETIME NULL default NULL
+) ENGINE=INNODB
+;
