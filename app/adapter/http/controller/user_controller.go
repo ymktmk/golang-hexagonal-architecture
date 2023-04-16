@@ -4,22 +4,21 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/ymktmk/golang-hexagonal-architecture/app/adapter/db"
 	"github.com/ymktmk/golang-hexagonal-architecture/app/adapter/http/view"
-	"github.com/ymktmk/golang-hexagonal-architecture/app/adapter/impl/repository"
-	serviceImpl "github.com/ymktmk/golang-hexagonal-architecture/app/adapter/impl/service"
+	"github.com/ymktmk/golang-hexagonal-architecture/app/domain/service"
 	"github.com/ymktmk/golang-hexagonal-architecture/app/application/usecase"
 )
 
-func ControlGetUser(w http.ResponseWriter, r *http.Request) {
+type UserController struct {
+	gettingUserService service.GettingUserService
+}
 
-	db, err := db.InitDB()
-	if err != nil {
-		panic(err)
-	}
+func NewUserController(gettingUserService service.GettingUserService) *UserController {
+	return &UserController{gettingUserService: gettingUserService}
+}
 
-	gettingUserService := serviceImpl.NewGettingUserService(repository.NewUserRepository(db))
-	users, err := usecase.RequestGetUser(gettingUserService)
+func (uc *UserController) GetUser(w http.ResponseWriter, r *http.Request) {
+	users, err := usecase.RequestGetUser(uc.gettingUserService)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
