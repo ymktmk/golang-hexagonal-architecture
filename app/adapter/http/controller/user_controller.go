@@ -10,15 +10,15 @@ import (
 )
 
 type UserController struct {
-	gettingUserService service.GettingUserService
+	userService service.UserService
 }
 
-func NewUserController(gettingUserService service.GettingUserService) *UserController {
-	return &UserController{gettingUserService: gettingUserService}
+func NewUserController(userService service.UserService) *UserController {
+	return &UserController{userService: userService}
 }
 
 func (uc *UserController) GetUser(w http.ResponseWriter, r *http.Request) {
-	users, err := usecase.RequestGetUser(uc.gettingUserService)
+	users, err := usecase.RequestGetUser(uc.userService)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return

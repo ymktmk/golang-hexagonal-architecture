@@ -18,11 +18,11 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	gettingUserService := service.NewGettingUserService(repository.NewUserRepository(db))
-	controller := controller.NewUserController(gettingUserService)
+	userService := service.NewUserService(repository.NewUserRepository(db))
+	userController := controller.NewUserController(userService)
 
 	Router = mux.NewRouter().StrictSlash(true)
-	Router.HandleFunc("/users", controller.GetUser).Methods("GET")
+	Router.HandleFunc("/users", userController.GetUser).Methods("GET")
 }
 
 func Serve() {
