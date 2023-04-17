@@ -8,15 +8,15 @@ import (
 	"github.com/ymktmk/golang-hexagonal-architecture/app/domain/service"
 )
 
-type gettingUserServiceImpl struct {
+type userServiceImpl struct {
 	userRepository repository.UserRepository
 }
 
-func NewGettingUserService(ur repository.UserRepository) service.GettingUserService {
-	return &gettingUserServiceImpl{userRepository: ur}
+func NewUserService(ur repository.UserRepository) service.UserService {
+	return &userServiceImpl{userRepository: ur}
 }
 
-func (s *gettingUserServiceImpl) Index() ([]model.User, error) {
+func (s *userServiceImpl) Index() ([]model.User, error) {
 	users, err := s.userRepository.FindAll()
 	if err != nil {
 		log.Println(err)

@@ -7,8 +7,8 @@ import (
 	"github.com/ymktmk/golang-hexagonal-architecture/app/domain/service"
 )
 
-func RequestGetUser(gettingUserService service.GettingUserService) ([]model.User, error) {
-	users, err := gettingUserService.Index()
+func RequestGetUser(userService service.UserService) ([]model.User, error) {
+	users, err := userService.Index()
 	if err != nil {
 		log.Println(err)
 		return []model.User{}, err
